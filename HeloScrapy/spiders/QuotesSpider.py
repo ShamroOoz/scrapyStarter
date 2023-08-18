@@ -5,7 +5,7 @@ from HeloScrapy.items import MyProducts
 class QuotesSpider(scrapy.Spider):
     name = "QuotesSpider"
     allowed_domains = ["quotes.toscrape.com"]
-    start_urls = ["https://quotes.toscrape.com/"]
+    start_urls = ["https://quotes.toscrape.com/js/"]
 
   
 
