@@ -1,10 +1,13 @@
 import scrapy
+from HeloScrapy.items import MyProducts
 
 
 class QuotesSpider(scrapy.Spider):
     name = "QuotesSpider"
     allowed_domains = ["quotes.toscrape.com"]
     start_urls = ["https://quotes.toscrape.com/"]
+
+  
 
     def parse(self, response):
         author_page_links = response.css(".author + a")
@@ -13,12 +16,16 @@ class QuotesSpider(scrapy.Spider):
         pagination_links = response.css("li.next a")
         yield from response.follow_all(pagination_links, self.parse)
 
+    
+        
     def parse_author(self, response):
-        def extract_with_css(query):
-            return response.css(query).get(default="").strip()
-
-        yield {
-            "name": extract_with_css("h3.author-title::text"),
-            "birthdate": extract_with_css(".author-born-date::text"),
-            "bio": extract_with_css(".author-description::text"),
-        }
+       products = MyProducts()
+       
+       def extract_with_css(query):
+          return response.css(query).get(default="").strip()
+      
+       products["name"] = extract_with_css("h3.author-title::text")
+       products["birthdate"] = extract_with_css(".author-born-date::text")
+       products["bio"] = extract_with_css(".author-description::text")
+       
+       yield products
